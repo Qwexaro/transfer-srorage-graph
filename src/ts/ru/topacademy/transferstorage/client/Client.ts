@@ -1,6 +1,6 @@
-import { Corridor } from "../backend/corridor/Corridor.js";
-import { WarehouseGraph } from "../backend/warehouse-graph/WarehouseGraph.js";
-import { WarehouseZone } from "../backend/warehouse-zone/WarehouseZone.js";
+import { Corridor } from "../backend/corridor/Corridor.ts";
+import { WarehouseGraph } from "../backend/warehouse-graph/warehouse-graph.ts";
+import { WarehouseZone } from "../backend/warehouse-zone/warehouse-zone.ts";
 
 const storage = new WarehouseGraph();
 
@@ -28,4 +28,4 @@ console.log(storage.findZone(5));
 
 console.log(storage.getConnectedZone(5));
 
-console.log(storage.breadthFirstTraversal(1));
+console.log(storage.breadthFirstTraversal(7));

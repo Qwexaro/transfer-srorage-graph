@@ -1,30 +1,36 @@
+import { Corridor } from "../corridor/Corridor.ts";
+import { WarehouseZone } from "../warehouse-zone/warehouse-zone.ts";
+
 export class WarehouseGraph {
+    zones: WarehouseZone[];
+    corridors: Corridor[];
+
     constructor() {
         this.zones = [];
         this.corridors = [];
     }
 
-    addZone(zone) { this.zones.push(zone) }
+    addZone(zone: WarehouseZone): void { this.zones.push(zone) }
     
-    addCorridor(corridor) { this.corridors.push(corridor) }
+    addCorridor(corridor: Corridor) { this.corridors.push(corridor) }
     
-    findZone(id) { return this.zones.find(zone => zone.id == id)}
+    findZone(id: number) { return this.zones.find(zone => zone.id == id)}
     
-    getConnectedZone(id) { 
-        let currentEdges = []
+    getConnectedZone(id: number): Corridor[] { 
+        let currentEdges: Corridor[] = []
         this.corridors.forEach(corridor => {
             if(corridor.from == id) {
-                currentEdges.push(this.corridors.find(node => node.to == corridor.to))
+                currentEdges.push(corridor)
             }
         })
         
         return currentEdges;
     }
 
-    breadthFirstTraversal(startId) {
+    breadthFirstTraversal(startId: number): WarehouseZone[] {
         const visited = new Set();
         const queue = [];
-        const order = [];
+        const order: WarehouseZone[] = [];
 
         const startZone = this.findZone(startId);
         if (!startZone) return order;
@@ -34,6 +40,9 @@ export class WarehouseGraph {
 
         while (queue.length > 0) {
             const currentZone = queue.shift();
+            
+            if(!currentZone) break;
+            
             order.push(currentZone);
 
             currentZone.adj.forEach(adjId => {
