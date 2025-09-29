@@ -26,17 +26,21 @@ export class WarehouseGraph {
         const queue = [];
         const order = [];
 
-        visited.add(startId);
-        queue.push(startId);
+        const startZone = this.findZone(startId);
+        if (!startZone) return order;
 
-        while(queue.length > 0) {
-            const currentNode = queue.shift();
-            order.push(currentNode.corridor);
+        visited.add(startZone.id);
+        queue.push(startZone);
 
-            currentNode.adj.forEach(adj => {
-                if(!visited.has(adj)) {
-                    visited.add(adj);
-                    queue.push(adj);
+        while (queue.length > 0) {
+            const currentZone = queue.shift();
+            order.push(currentZone);
+
+            currentZone.adj.forEach(adjId => {
+                if (!visited.has(adjId)) {
+                    visited.add(adjId);
+                    const adjZone = this.findZone(adjId);
+                    if (adjZone) queue.push(adjZone);
                 }
             });
         }
